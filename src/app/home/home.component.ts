@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  MakeTestPost() {
+  MakeTestGet() {
     this.navigationService.DoSetup().subscribe({
       next: (x) =>{
         this.testResult = x;
