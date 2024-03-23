@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService } from '../navigation.service';
+import { BackendService } from '../backend.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,9 +13,8 @@ export class HomeComponent implements OnInit {
 
   testResult: any;
 
-  constructor(private navigationService: NavigationService){
-
-  }
+  constructor(private backendService: BackendService,
+    private router: Router){ }
   
 
   ngOnInit(): void {
@@ -23,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   MakeTestGet() {
-    this.navigationService.DoSetup().subscribe({
+    this.backendService.DoSetup().subscribe({
       next: (x) =>{
         this.testResult = x;
         var okay = "";
@@ -35,6 +34,10 @@ export class HomeComponent implements OnInit {
         console.log('Completed');
       }
     })
+  }
+
+  MakeTestUser() {
+    this.router.navigate(['/user']);
   }
 
 }
