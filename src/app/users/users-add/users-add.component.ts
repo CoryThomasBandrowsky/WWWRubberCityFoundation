@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../user.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-users-add',
@@ -10,33 +10,23 @@ import { UserService } from '../../user.service';
 export class UsersAddComponent implements OnInit {
 
   addUserForm: FormGroup;
+  passwordVisible: boolean = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
-    this.addUserForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.pattern(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/)]], // Example pattern for phone numbers
-      addressLine1: [''],
-      addressLine2: [''],
-      city: [''],
-      state: [''],
-      postalCode: [''],
-      country: [''],
-      dateOfBirth: [null, [Validators.required]],
-      memberSince: [{ value: '', disabled: true }],
-      lastLogin: [{ value: '', disabled: true }],
-      isActive: [true],
-      userRole: [''],
-      profilePictureURL: [''],
-      needsHelp: [false],
-      isLockedOut: [{ value: '', disabled: true }],
-      isBanned: [{ value: '', disabled: true }]
-    });
-  }
+  constructor(private fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.addUserForm = this.fb.group({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phoneNumber: new FormControl('', Validators.required),
+      postalCode: new FormControl(''),
+      inputPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    });
   }
 
   onSubmit(): void {
@@ -53,6 +43,10 @@ export class UsersAddComponent implements OnInit {
         }
       })
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 
 }
